@@ -1,0 +1,66 @@
+<div class="container">
+    
+    <div class="row table-container">
+        
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+            <ng-container matColumnDef="nombre">
+                <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="apellido1">
+                <th mat-header-cell *matHeaderCellDef>Apellido1</th>
+                <td mat-cell *matCellDef="let element"> {{element.apellido1}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="apellido2">
+                <th mat-header-cell *matHeaderCellDef>Apellido2</th>
+                <td mat-cell *matCellDef="let element"> {{element.apellido2}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="edad">
+                <th mat-header-cell *matHeaderCellDef>Edad</th>
+                <td mat-cell *matCellDef="let element"> {{element.edad}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Menu">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+
+                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="clickEditar(element)">
+                            <mat-icon>create</mat-icon>
+                            <span>Editar</span>
+                        </button>
+                        <button mat-menu-item (click)="clickBorrar(element)">
+                            <mat-icon>delete</mat-icon>
+                            <span>Borrar</span>
+                        </button>
+                    </mat-menu>
+
+                </td>
+
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        </table>
+    </div>
+
+    <div class="row botonesTabla col-12">
+        <button mat-raised-button color="primary" class="col-2" (click)="addRow()">Add row</button>
+        <button mat-raised-button color="warn" class="col-2"  (click)="deleteAll()">Delete all rows</button>
+        <button mat-raised-button color="accent" class="col-2"  (click)="clickUndoAll()">Restore persons</button>
+        <button mat-raised-button  color="accent" class="col-2" (click)="clickUndo()">
+            <mat-icon>undo</mat-icon>
+            <span>Undo</span>
+        </button>
+    </div>
+
+    <app-bar-chart></app-bar-chart>
+</div>
