@@ -1,31 +1,22 @@
-package com.ejercicioSpring.entity;
+package com.ejercicioSpring.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-@Entity
-@Table(name = "COLORES")
-public class Colores  implements Serializable {
-
-    @Id
-    @Column(name="CODIGO")
+public class ColorModel implements Serializable {
     private int codigo;
-    @Column(name="NOMBRE")
     private String nombre;
-
     @JsonBackReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "color")
-    private List<Producto> listaProductos;
+    private List<ProductoModel> listaProductos;
 
 
-    public Colores() {
+    public ColorModel() {
     }
 
-    public Colores(int codigo, String nombre, List<Producto> listaProductos) {
+    public ColorModel(int codigo, String nombre, List<ProductoModel> listaProductos) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.listaProductos = listaProductos;
@@ -47,17 +38,17 @@ public class Colores  implements Serializable {
         this.nombre = nombre;
     }
 
-    public List<Producto> getListaProductos() {
+    public List<ProductoModel> getListaProductos() {
         return listaProductos;
     }
 
-    public void setListaProductos(List<Producto> listaProductos) {
+    public void setListaProductos(List<ProductoModel> listaProductos) {
         this.listaProductos = listaProductos;
     }
 
     @Override
     public String toString() {
-        return "Colores{" +
+        return "Color{" +
                 "codigo=" + codigo +
                 ", nombre='" + nombre + '\'' +
                 '}';

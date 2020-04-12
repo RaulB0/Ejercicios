@@ -3,31 +3,27 @@ package com.ejercicioSpring.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import java.io.Serializable;
 import java.util.List;
 
-public class ProductoModel  implements Serializable {
-
+public class InsertProductoDTO {
 
     private int codigo;
     private String nombre;
-    @JsonManagedReference
-    private ColorModel color;
+    private int color;
     private String fecha_creacion;
+    private int[] listaCategorias;
 
-    @JsonBackReference
-    private List<ProductoCategoriaModel> listaCategorias;
-
-    public ProductoModel() {
+    public InsertProductoDTO() {
     }
 
-    public ProductoModel(int codigo, String nombre, ColorModel color, String fecha_creacion, List<ProductoCategoriaModel> listaCategorias) {
+    public InsertProductoDTO(int codigo, String nombre, int color, String fecha_creacion, int[] listaCategorias) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.color = color;
         this.fecha_creacion = fecha_creacion;
         this.listaCategorias = listaCategorias;
     }
+
 
     public int getCodigo() {
         return codigo;
@@ -45,11 +41,11 @@ public class ProductoModel  implements Serializable {
         this.nombre = nombre;
     }
 
-    public ColorModel getColor() {
+    public int getColor() {
         return color;
     }
 
-    public void setColor(ColorModel color) {
+    public void setColor(int color) {
         this.color = color;
     }
 
@@ -61,21 +57,11 @@ public class ProductoModel  implements Serializable {
         this.fecha_creacion = fecha_creacion;
     }
 
-    public List<ProductoCategoriaModel> getListaCategorias() {
+    public int[] getListaCategorias() {
         return listaCategorias;
     }
 
-    public void setListaCategorias(List<ProductoCategoriaModel> listaCategorias) {
+    public void setListaCategorias(int[] listaCategorias) {
         this.listaCategorias = listaCategorias;
-    }
-
-    @Override
-    public String toString() {
-        return "ProductoModel{" +
-                "codigo=" + codigo +
-                ", nombre='" + nombre + '\'' +
-                ", color=" + color +
-                ", fecha_creacion='" + fecha_creacion + '\'' +
-                '}';
     }
 }

@@ -1,9 +1,5 @@
 package com.ejercicioSpring.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -18,9 +14,8 @@ public class Producto implements Serializable {
     @Column(name="NOMBRE")
     private String nombre;
     @ManyToOne
-    @JsonManagedReference
     @JoinColumn(name="COLOR")
-    private Colores color;
+    private Color color;
     @Column(name="FECHA_CREACION")
     private String fecha_creacion;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "productoCategoriaId.producto")
@@ -29,7 +24,7 @@ public class Producto implements Serializable {
     public Producto() {
     }
 
-    public Producto(int codigo, String nombre, Colores color, String fecha_creacion, List<ProductoCategoria> listaCategorias) {
+    public Producto(int codigo, String nombre, Color color, String fecha_creacion, List<ProductoCategoria> listaCategorias) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.color = color;
@@ -53,11 +48,11 @@ public class Producto implements Serializable {
         this.nombre = nombre;
     }
 
-    public Colores getColor() {
+    public Color getColor() {
         return color;
     }
 
-    public void setColor(Colores color) {
+    public void setColor(Color color) {
         this.color = color;
     }
 
