@@ -1,13 +1,12 @@
-package com.ejercicioSpring.entity;
+package com.ejercicioSpring.entity.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-@Entity
+@MappedSuperclass
 @Table(name = "COLORES")
 public class Color implements Serializable {
 
@@ -17,18 +16,15 @@ public class Color implements Serializable {
     @Column(name="NOMBRE")
     private String nombre;
 
-    @JsonBackReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "color")
-    private List<Producto> listaProductos;
+
 
 
     public Color() {
     }
 
-    public Color(int codigo, String nombre, List<Producto> listaProductos) {
+    public Color(int codigo, String nombre) {
         this.codigo = codigo;
         this.nombre = nombre;
-        this.listaProductos = listaProductos;
     }
 
     public int getCodigo() {
@@ -45,14 +41,6 @@ public class Color implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public List<Producto> getListaProductos() {
-        return listaProductos;
-    }
-
-    public void setListaProductos(List<Producto> listaProductos) {
-        this.listaProductos = listaProductos;
     }
 
     @Override

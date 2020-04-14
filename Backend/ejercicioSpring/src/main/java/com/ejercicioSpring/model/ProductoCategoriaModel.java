@@ -1,9 +1,6 @@
 package com.ejercicioSpring.model;
 
-import com.ejercicioSpring.entity.ProductoCategoriaId;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.io.Serializable;
 

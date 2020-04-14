@@ -1,7 +1,7 @@
 package com.ejercicioSpring.service;
 
-import com.ejercicioSpring.entity.Categoria;
-import com.ejercicioSpring.entity.Color;
+import com.ejercicioSpring.entity.entities.Color;
+import com.ejercicioSpring.entity.entity_extends.ColorExtends;
 import com.ejercicioSpring.model.CategoriaModel;
 import com.ejercicioSpring.model.ColorModel;
 import com.ejercicioSpring.model.InsertColorDTO;
@@ -43,7 +43,7 @@ public class ColorServiceImp implements ColorService {
     @Override
     public InsertColorDTO insertColor(InsertColorDTO color) throws Exception {
         color.setCodigo(colorRepository.getLastCodigo());
-        colorRepository.save(modelMapper.map(color, Color.class));
+        colorRepository.save(modelMapper.map(color, ColorExtends.class));
         return color;
     }
 
@@ -56,7 +56,7 @@ public class ColorServiceImp implements ColorService {
     @Override
     public InsertColorDTO updateColor(InsertColorDTO color) throws Exception {
         if(!colorRepository.findById(color.getCodigo()).isPresent()) throw new Exception("No se encontro el color");
-        colorRepository.save(modelMapper.map(color, Color.class));
+        colorRepository.save(modelMapper.map(color, ColorExtends.class));
         return color;
     }
 }

@@ -1,6 +1,10 @@
 package com.ejercicioSpring.service;
 
-import com.ejercicioSpring.entity.*;
+import com.ejercicioSpring.entity.entities.*;
+import com.ejercicioSpring.entity.entity_extends.CategoriaExtends;
+import com.ejercicioSpring.entity.entity_extends.ColorExtends;
+import com.ejercicioSpring.entity.entity_extends.ProductoCategoriaExtends;
+import com.ejercicioSpring.entity.entity_extends.ProductoExtends;
 import com.ejercicioSpring.model.InsertProductoDTO;
 import com.ejercicioSpring.model.ProductoModel;
 import com.ejercicioSpring.repository.CategoriaRepository;
@@ -43,11 +47,11 @@ public class ProductoServiceImp  implements ProductoService{
 
     public InsertProductoDTO insertProducto(InsertProductoDTO insertProductoDTO) throws Exception {
         insertProductoDTO.setCodigo(productoRepository.getLastCodigo());
-        Producto producto = new Producto();
+        ProductoExtends producto = new ProductoExtends();
 
 
         if(insertProductoDTO.getColor() != 0){
-            Optional<Color> color = colorRepository.findById(insertProductoDTO.getColor());
+            Optional<ColorExtends> color = colorRepository.findById(insertProductoDTO.getColor());
             if(!color.isPresent()) throw new Exception("No se encontro el color");
             producto.setColor(color.get());
         }
@@ -59,30 +63,28 @@ public class ProductoServiceImp  implements ProductoService{
         productoRepository.save(producto);
 
         if(insertProductoDTO.getListaCategorias() != null){
-            List<ProductoCategoria> listaProductoCategoria = CheckAndGetProductoCategorias(insertProductoDTO.getListaCategorias(), producto);
+            List<ProductoCategoriaExtends> listaProductoCategoria = CheckAndGetProductoCategorias(insertProductoDTO.getListaCategorias(), producto);
 
             productoCategoriaRepository.saveAll(listaProductoCategoria);
 
         }
 
-
-
         return insertProductoDTO;
     }
 
-    private List<ProductoCategoria> CheckAndGetProductoCategorias(int[] ListaidCategorias, Producto producto) throws Exception {
-        List<Categoria> listaCategoria = new ArrayList<>();
+    private List<ProductoCategoriaExtends> CheckAndGetProductoCategorias(int[] ListaidCategorias, Producto producto) throws Exception {
+        List<CategoriaExtends> listaCategoria = new ArrayList<>();
         for (int categoriaCodigo:ListaidCategorias ) {
-            Optional<Categoria> categoria = categoriaRepository.findById(categoriaCodigo);
+            Optional<CategoriaExtends> categoria = categoriaRepository.findById(categoriaCodigo);
             if(!categoria.isPresent()) throw new Exception("No se encontro la categoria");
             listaCategoria.add(categoria.get());
 
         }
-        List<ProductoCategoria> listaProductoCategoria = new ArrayList<>();
-        for (Categoria categoria : listaCategoria) {
+        List<ProductoCategoriaExtends> listaProductoCategoria = new ArrayList<>();
+        for (CategoriaExtends categoria : listaCategoria) {
             listaProductoCategoria.add(
-                    new ProductoCategoria(
-                            new ProductoCategoriaId(producto,categoria)));
+                    new ProductoCategoriaExtends(
+                            new ProductoCategoriaId(producto.getCodigo(),categoria.getCodigo())));
         }
         return listaProductoCategoria;
     }
@@ -99,28 +101,19 @@ public class ProductoServiceImp  implements ProductoService{
 
     @Override
     public List<ProductoModel> getProductosByCategory(int codigo) {
-        Type tipo = new TypeToken<List<ProductoModel>>(){}.getType();
-        List<Producto> listaProductos = productoRepository.findAll();
-        List<Producto> productosFiltrados = new ArrayList<>();
-        for (Producto producto : listaProductos){
-            for(ProductoCategoria proCat: producto.getListaCategorias()){
-                if(proCat.getProductoCategoriaId().getCategoria().getCodigo() == codigo){
-                    productosFiltrados.add(producto);
-                    break;
-                }
-            }
-        }
 
-        return  modelMapper.map(productosFiltrados,tipo);
+        Type tipo = new TypeToken<List<ProductoModel>>(){}.getType();
+        List<ProductoExtends> listaProductos = productoRepository.getProductosByCategory(codigo);
+        return  modelMapper.map(listaProductos,tipo);
     }
 
     public InsertProductoDTO updateProducto(InsertProductoDTO productoDTO) {
         try{
             if(productoRepository.getOne(productoDTO.getCodigo()) == null) throw new Exception("No se encontro el producto");
 
-            Producto producto = new Producto();
+            ProductoExtends producto = new ProductoExtends();
             if(productoDTO.getColor() != 0){
-                Optional<Color> color = colorRepository.findById(productoDTO.getColor());
+                Optional<ColorExtends> color = colorRepository.findById(productoDTO.getColor());
                 if(!color.isPresent()) throw new Exception("No se encontro el color");
                 producto.setColor(color.get());
             }
@@ -132,7 +125,7 @@ public class ProductoServiceImp  implements ProductoService{
             productoRepository.save(producto);
 
             if(productoDTO.getListaCategorias() != null){
-                List<ProductoCategoria> listaProductoCategoria = CheckAndGetProductoCategorias(productoDTO.getListaCategorias(), producto);
+                List<ProductoCategoriaExtends> listaProductoCategoria = CheckAndGetProductoCategorias(productoDTO.getListaCategorias(), producto);
 
                 productoCategoriaRepository.saveAll(listaProductoCategoria);
 
@@ -157,13 +150,5 @@ public class ProductoServiceImp  implements ProductoService{
 
         }
         return null;
-
-
-
-
-
-
-
-
     }
 }

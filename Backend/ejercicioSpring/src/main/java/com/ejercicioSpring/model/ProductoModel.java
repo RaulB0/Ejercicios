@@ -11,7 +11,6 @@ public class ProductoModel  implements Serializable {
 
     private int codigo;
     private String nombre;
-    @JsonManagedReference
     private ColorModel color;
     private String fecha_creacion;
 

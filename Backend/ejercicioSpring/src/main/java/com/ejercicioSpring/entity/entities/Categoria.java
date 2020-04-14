@@ -1,12 +1,9 @@
-package com.ejercicioSpring.entity;
+package com.ejercicioSpring.entity.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
+@MappedSuperclass
 @Table(name = "CATEGORIA")
 public class Categoria  implements Serializable {
     @Id

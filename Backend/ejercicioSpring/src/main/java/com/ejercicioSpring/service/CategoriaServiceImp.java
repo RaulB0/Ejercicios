@@ -1,9 +1,8 @@
 package com.ejercicioSpring.service;
 
-import com.ejercicioSpring.entity.Categoria;
-import com.ejercicioSpring.entity.Producto;
+import com.ejercicioSpring.entity.entities.Categoria;
+import com.ejercicioSpring.entity.entity_extends.CategoriaExtends;
 import com.ejercicioSpring.model.CategoriaModel;
-import com.ejercicioSpring.model.ProductoModel;
 import com.ejercicioSpring.repository.CategoriaRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -42,7 +41,7 @@ public class CategoriaServiceImp implements CategoriaService{
     @Override
     public CategoriaModel insertCategoria(CategoriaModel categoriaModel) throws Exception {
         categoriaModel.setCodigo(categoriaRepository.getLastCodigo());
-        categoriaRepository.save(modelMapper.map(categoriaModel, Categoria.class));
+        categoriaRepository.save(modelMapper.map(categoriaModel, CategoriaExtends.class));
         return categoriaModel;
 
     }
@@ -55,7 +54,7 @@ public class CategoriaServiceImp implements CategoriaService{
     @Override
     public CategoriaModel updateCategoria(CategoriaModel categoria) throws Exception {
         if(!categoriaRepository.findById(categoria.getCodigo()).isPresent()) throw new Exception("No se encontro la categoria");
-        categoriaRepository.save(modelMapper.map(categoria, Categoria.class));
+        categoriaRepository.save(modelMapper.map(categoria, CategoriaExtends.class));
         return categoria;
     }
 }

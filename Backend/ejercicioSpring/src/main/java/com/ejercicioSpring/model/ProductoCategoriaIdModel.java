@@ -1,11 +1,5 @@
 package com.ejercicioSpring.model;
 
-import com.ejercicioSpring.entity.Categoria;
-import com.ejercicioSpring.entity.Producto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
 public class ProductoCategoriaIdModel implements Serializable {
