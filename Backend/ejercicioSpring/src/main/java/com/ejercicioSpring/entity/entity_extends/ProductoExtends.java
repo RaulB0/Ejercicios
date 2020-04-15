@@ -45,9 +45,11 @@ public class ProductoExtends extends Producto {
     @Override
     public void setFecha_creacion(String fecha_creacion) {
         String year = fecha_creacion.split("/")[2];
+
         if(Integer.parseInt(year)< 1990){
             super.setFecha_creacion(null);
+        }else{
+            super.setFecha_creacion(fecha_creacion);
         }
-        super.setFecha_creacion(fecha_creacion);
     }
 }

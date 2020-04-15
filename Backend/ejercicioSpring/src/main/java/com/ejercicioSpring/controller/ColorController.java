@@ -3,6 +3,7 @@ package com.ejercicioSpring.controller;
 import com.ejercicioSpring.model.CategoriaModel;
 import com.ejercicioSpring.model.ColorModel;
 import com.ejercicioSpring.model.InsertColorDTO;
+import com.ejercicioSpring.model.MensajeDTO;
 import com.ejercicioSpring.service.CategoriaService;
 import com.ejercicioSpring.service.ColorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,67 +25,28 @@ public class ColorController {
 
     @PostMapping("insertColor")
     public ResponseEntity<InsertColorDTO> insertColor(@RequestBody InsertColorDTO color)  {
-        try {
-            colorService.insertColor(color);
-
-            return new ResponseEntity<InsertColorDTO>(color, HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<InsertColorDTO>(color, HttpStatus.NOT_FOUND);
-        }
-
+        return colorService.insertColor(color);
     }
 
     @GetMapping("/getAllColores")
     public ResponseEntity<List<ColorModel>> getAllColores(){
-
-        return new ResponseEntity<List<ColorModel>>(colorService.getAllColores(), HttpStatus.OK);
-
+        return colorService.getAllColores();
     }
 
     @GetMapping("/getColor")
     public ResponseEntity<ColorModel> getColor(@RequestParam(name="codigo") int codigo){
-        ColorModel colorModel = colorService.getColor(codigo);
-
-        if(colorModel == null){
-            return new ResponseEntity<ColorModel>(colorModel, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<ColorModel>(colorModel, HttpStatus.OK);
+        return colorService.getColor(codigo);
     }
 
 
     @GetMapping("/deleteColor")
-    public ResponseEntity<String> deleteColor(@RequestParam(name="codigo") int codigo){
-        ColorModel colorModel= colorService.getColor(codigo);
-
-
-        if(colorModel == null){
-            return new ResponseEntity<String>("", HttpStatus.NOT_FOUND);
-        }else{
-            colorService.deleteColor(codigo);
-        }
-        return new ResponseEntity<String>("", HttpStatus.OK);
+    public ResponseEntity<MensajeDTO> deleteColor(@RequestParam(name="codigo") int codigo){
+        return colorService.deleteColor(codigo);
     }
-
-
 
 
     @PostMapping("updateColor")
     public ResponseEntity<InsertColorDTO> updateColor(@RequestBody InsertColorDTO colorDTO){
-        InsertColorDTO color = null;
-        try{
-            color = colorService.updateColor(colorDTO);
-            if(color == null){
-
-                return new ResponseEntity<InsertColorDTO>(color, HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<InsertColorDTO>(color, HttpStatus.OK);
-
-        }catch(Exception e){
-
-
-        }
-
-        return new ResponseEntity<InsertColorDTO>(color, HttpStatus.NOT_FOUND);
-
+        return  colorService.updateColor(colorDTO);
     }
 }

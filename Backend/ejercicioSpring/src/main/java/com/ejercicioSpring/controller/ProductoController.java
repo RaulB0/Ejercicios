@@ -1,5 +1,6 @@
 package com.ejercicioSpring.controller;
 
+import com.ejercicioSpring.model.MensajeDTO;
 import com.ejercicioSpring.model.ProductoModel;
 import com.ejercicioSpring.model.InsertProductoDTO;
 import com.ejercicioSpring.service.ProductoService;
@@ -23,66 +24,36 @@ public class ProductoController {
 
     @PostMapping("insertProducto")
     public ResponseEntity<InsertProductoDTO> insertProducto(@RequestBody InsertProductoDTO insertProductoDTO)  {
-        try {
-            productoService.insertProducto(insertProductoDTO);
-
-            return new ResponseEntity<InsertProductoDTO>(insertProductoDTO, HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<InsertProductoDTO>(insertProductoDTO, HttpStatus.NOT_FOUND);
-        }
-
+        return productoService.insertProducto(insertProductoDTO);
     }
 
     @GetMapping("/getAllProductos")
     public ResponseEntity<List<ProductoModel>> getAllProductos(){
-
-        return new ResponseEntity<List<ProductoModel>>(productoService.getAllProductos(), HttpStatus.OK);
-
+        return productoService.getAllProductos();
     }
+
 
     @GetMapping("/getProducto")
     public ResponseEntity<ProductoModel> getProducto(@RequestParam(name="codigo") int codigo){
-        ProductoModel producto = productoService.getProducto(codigo);
-
-        if(producto == null){
-            return new ResponseEntity<ProductoModel>(producto, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<ProductoModel>(producto, HttpStatus.OK);
+        return productoService.getProducto(codigo);
     }
 
 
     @GetMapping("/deleteProducto")
-    public ResponseEntity<String> deleteProducto(@RequestParam(name="codigo") int codigo){
-        ProductoModel producto = productoService.getProducto(codigo);
-
-        if(producto == null){
-            return new ResponseEntity<String>("", HttpStatus.NOT_FOUND);
-        }else{
-            productoService.deleteProducto(codigo);
-        }
-        return new ResponseEntity<String>("", HttpStatus.OK);
+    public ResponseEntity<MensajeDTO> deleteProducto(@RequestParam(name="codigo") int codigo){
+        return productoService.deleteProducto(codigo);
     }
-
-
 
 
     @PostMapping("updateProducto")
     public ResponseEntity<InsertProductoDTO> updateProducto(@RequestBody InsertProductoDTO insertProductoDTO){
-
-
-        InsertProductoDTO producto = productoService.updateProducto(insertProductoDTO);
-        if(producto == null){
-            return new ResponseEntity<InsertProductoDTO>(insertProductoDTO, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<InsertProductoDTO>(insertProductoDTO, HttpStatus.OK);
+        return productoService.updateProducto(insertProductoDTO);
     }
+
 
     @GetMapping("categoria")
     public ResponseEntity<List<ProductoModel>> getProductosByCategoria(@RequestParam(name="codigo") int codigo){
-
-        return new ResponseEntity<List<ProductoModel>>(
-                productoService.getProductosByCategory(codigo), HttpStatus.OK);
-
+        return productoService.getProductosByCategory(codigo);
     }
 
 }

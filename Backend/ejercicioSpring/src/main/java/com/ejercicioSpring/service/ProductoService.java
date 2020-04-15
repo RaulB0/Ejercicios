@@ -1,18 +1,20 @@
 package com.ejercicioSpring.service;
 
 import com.ejercicioSpring.model.InsertProductoDTO;
+import com.ejercicioSpring.model.MensajeDTO;
 import com.ejercicioSpring.model.ProductoModel;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface ProductoService {
 
-    public ProductoModel getProducto(int codigo);
-    public List<ProductoModel> getAllProductos();
-    public List<ProductoModel> getProductosByCategory(int codigo);
-    public InsertProductoDTO insertProducto(InsertProductoDTO insertProductoDTO) throws Exception;
-    public void deleteProducto(int codigo);
-    public InsertProductoDTO updateProducto(InsertProductoDTO producto);
+    public ResponseEntity<ProductoModel> getProducto(int codigo);
+    public ResponseEntity<List<ProductoModel>> getAllProductos();
+    public ResponseEntity<List<ProductoModel>> getProductosByCategory(int codigo);
+    public ResponseEntity<InsertProductoDTO> insertProducto(InsertProductoDTO insertProductoDTO);
+    public ResponseEntity<MensajeDTO> deleteProducto(int codigo);
+    public ResponseEntity<InsertProductoDTO> updateProducto(InsertProductoDTO producto);
 
 
 

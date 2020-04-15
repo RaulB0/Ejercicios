@@ -1,10 +1,10 @@
 package com.ejercicioSpring.service;
 
 import com.ejercicioSpring.entity.entities.*;
+import com.ejercicioSpring.entity.entity_extends.CategoriaExtends;
 import com.ejercicioSpring.entity.entity_extends.ColorExtends;
 import com.ejercicioSpring.entity.entity_extends.ProductoExtends;
-import com.ejercicioSpring.model.InsertProductoDTO;
-import com.ejercicioSpring.model.ProductoModel;
+import com.ejercicioSpring.model.*;
 import com.ejercicioSpring.repository.CategoriaRepository;
 import com.ejercicioSpring.repository.ColorRepository;
 import com.ejercicioSpring.repository.ProductoRepository;
@@ -12,9 +12,12 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,82 +41,133 @@ public class ProductoServiceImp  implements ProductoService{
 
 
 
-    public InsertProductoDTO insertProducto(InsertProductoDTO insertProductoDTO) throws Exception {
+    public ResponseEntity<InsertProductoDTO> insertProducto(InsertProductoDTO insertProductoDTO){
         insertProductoDTO.setCodigo(productoRepository.getLastCodigo());
         ProductoExtends producto = new ProductoExtends();
+        try {
+            if(insertProductoDTO.getColor() != 0){
+                Optional<ColorExtends> color = colorRepository.findById(insertProductoDTO.getColor());
+                if(!color.isPresent()) throw new Exception("No se encontro el color");
+                producto.setColor(color.get());
+                color = null;
+            }
 
+            producto.setNombre(insertProductoDTO.getNombre());
+            producto.setFecha_creacion(insertProductoDTO.getFecha_creacion());
+            producto.setCodigo(insertProductoDTO.getCodigo());
 
-        if(insertProductoDTO.getColor() != 0){
-            Optional<ColorExtends> color = colorRepository.findById(insertProductoDTO.getColor());
-            if(!color.isPresent()) throw new Exception("No se encontro el color");
-            producto.setColor(color.get());
+            productoRepository.save(producto);
+            return new ResponseEntity<InsertProductoDTO>(insertProductoDTO, HttpStatus.OK);
+
+        }catch (Exception e){
+            return new ResponseEntity<InsertProductoDTO>(insertProductoDTO, HttpStatus.NOT_FOUND);
+
+        }finally {
+            producto = null;
         }
-
-        producto.setNombre(insertProductoDTO.getNombre());
-        producto.setFecha_creacion(insertProductoDTO.getFecha_creacion());
-        producto.setCodigo(insertProductoDTO.getCodigo());
-
-        productoRepository.save(producto);
-
-
-        return insertProductoDTO;
     }
-
 
 
     @Override
-    public void deleteProducto(int codigo) {
-        productoRepository.deleteById(codigo);
+    public ResponseEntity<MensajeDTO> deleteProducto(int codigo) {
+        try {
+            productoRepository.deleteById(codigo);
+            return new ResponseEntity<MensajeDTO>(new MensajeDTO("Borrado correctamente",200), HttpStatus.OK);
+        }catch(Exception e){
+
+        }
+        return new ResponseEntity<MensajeDTO>(new MensajeDTO("No se encontro el producto",404), HttpStatus.NOT_FOUND);
     }
 
-    public List<ProductoModel> getAllProductos(){
+    public ResponseEntity<List<ProductoModel>> getAllProductos(){
         Type tipo = new TypeToken<List<ProductoModel>>(){}.getType();
-        return  modelMapper.map(productoRepository.findAll(),tipo);
+        List<ProductoModel> listaProductos;
+
+        try {
+            listaProductos = modelMapper.map(productoRepository.findAll(),tipo);
+            return new ResponseEntity<List<ProductoModel>>(listaProductos,HttpStatus.OK);
+        }catch (Exception e){
+
+        }finally {
+            tipo = null;
+            listaProductos = null;
+        }
+        return new ResponseEntity<List<ProductoModel>>(new ArrayList<ProductoModel>(),HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
 
     @Override
-    public List<ProductoModel> getProductosByCategory(int codigo) {
-
+    public ResponseEntity<List<ProductoModel>> getProductosByCategory(int codigo) {
         Type tipo = new TypeToken<List<ProductoModel>>(){}.getType();
-        List<ProductoExtends> listaProductos = productoRepository.getProductosByCategory(codigo);
-        return  modelMapper.map(listaProductos,tipo);
+        List<ProductoExtends> listaProductos;
+        List<ProductoModel> lista;
+        try {
+            listaProductos = productoRepository.getProductosByCategory(codigo);
+            lista = modelMapper.map(listaProductos,tipo);
+            return new ResponseEntity<List<ProductoModel>>(lista,HttpStatus.OK);
+        }catch (Exception e){
+        }finally {
+            tipo = null;
+            listaProductos = null;
+            lista = null;
+        }
+        return new ResponseEntity<List<ProductoModel>>(new ArrayList<ProductoModel>(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    public InsertProductoDTO updateProducto(InsertProductoDTO productoDTO) {
+
+    public ResponseEntity<InsertProductoDTO> updateProducto(InsertProductoDTO productoDTO) {
+        ProductoExtends producto;
+        List<CategoriaExtends> listaCategorias;
         try{
-            if(productoRepository.getOne(productoDTO.getCodigo()) == null) throw new Exception("No se encontro el producto");
+            producto = productoRepository.getOne(productoDTO.getCodigo());
+            listaCategorias = new ArrayList<>();
 
-            ProductoExtends producto = new ProductoExtends();
+            if(producto == null) throw new Exception("No se encontro el producto");
+
             if(productoDTO.getColor() != 0){
                 Optional<ColorExtends> color = colorRepository.findById(productoDTO.getColor());
                 if(!color.isPresent()) throw new Exception("No se encontro el color");
                 producto.setColor(color.get());
+                color = null;
+            }
+            if(producto.getListaCategorias() != null){
+                for (int codigoCategoria: productoDTO.getListaCategorias()){
+                    listaCategorias.add(categoriaRepository.getOne(codigoCategoria));
+                }
             }
 
             producto.setNombre(productoDTO.getNombre());
             producto.setFecha_creacion(productoDTO.getFecha_creacion());
             producto.setCodigo(productoDTO.getCodigo());
+            producto.setListaCategorias(listaCategorias);
 
             productoRepository.save(producto);
 
 
+            return new ResponseEntity<InsertProductoDTO>(productoDTO, HttpStatus.OK);
 
-            return productoDTO;
-        }catch(Exception e){
+        }catch (Exception e){
+            return new ResponseEntity<InsertProductoDTO>(productoDTO, HttpStatus.NOT_FOUND);
+        }finally {
+            producto = null;
+            listaCategorias = null;
         }
-
-        return null;
-
-
     }
 
-    public ProductoModel getProducto(int codigo) {
+
+    public ResponseEntity<ProductoModel> getProducto(int codigo) {
+        Producto producto = null;
         try {
-            Producto producto = productoRepository.getOne(codigo);
-            return  modelMapper.map(producto,ProductoModel.class);
+            producto = productoRepository.getOne(codigo);
+            if(producto == null){
+                return new ResponseEntity<ProductoModel>(modelMapper.map(new ProductoModel(),ProductoModel.class),HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<ProductoModel>(modelMapper.map(producto,ProductoModel.class),HttpStatus.OK);
         }catch(Exception e){
 
+        }finally {
+            producto = null;
         }
-        return null;
+        return new ResponseEntity<ProductoModel>(modelMapper.map(new ProductoModel(),ProductoModel.class),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
