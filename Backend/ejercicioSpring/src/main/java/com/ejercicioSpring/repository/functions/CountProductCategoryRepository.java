@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository("CountProductCategoryRepository")
 public interface CountProductCategoryRepository  extends JpaRepository<CountProductCategoryFunction,Integer> {
 
-    @Query(value="SELECT DISTINCT COUNT_PRODUCTO_CATEGORY(:categoria) FROM PRODUCTO", nativeQuery = true)
+    @Query(value="SELECT COUNT_PRODUCTO_CATEGORY(:categoria) FROM SYSIBM.SYSDUMMY1", nativeQuery = true)
     int functionProductosByCategory(@Param("categoria") String categoria);
 }
