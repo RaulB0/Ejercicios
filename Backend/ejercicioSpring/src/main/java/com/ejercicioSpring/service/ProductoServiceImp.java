@@ -87,7 +87,6 @@ public class ProductoServiceImp  implements ProductoService{
             listaProductos = modelMapper.map(productoRepository.findAll(),tipo);
             return new ResponseEntity<List<ProductoModel>>(listaProductos,HttpStatus.OK);
         }catch (Exception e){
-
         }finally {
             tipo = null;
             listaProductos = null;
