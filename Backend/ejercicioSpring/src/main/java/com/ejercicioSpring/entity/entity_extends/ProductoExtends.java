@@ -1,12 +1,8 @@
 package com.ejercicioSpring.entity.entity_extends;
 
-import com.ejercicioSpring.entity.entities.Categoria;
-import com.ejercicioSpring.entity.entities.Color;
 import com.ejercicioSpring.entity.entities.Producto;
-import com.ejercicioSpring.entity.entities.ProductoCategoria;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.List;
 
 @Entity

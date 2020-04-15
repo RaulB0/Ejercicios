@@ -1,15 +1,12 @@
 package com.ejercicioSpring.service;
 
 import com.ejercicioSpring.entity.entities.*;
-import com.ejercicioSpring.entity.entity_extends.CategoriaExtends;
 import com.ejercicioSpring.entity.entity_extends.ColorExtends;
-import com.ejercicioSpring.entity.entity_extends.ProductoCategoriaExtends;
 import com.ejercicioSpring.entity.entity_extends.ProductoExtends;
 import com.ejercicioSpring.model.InsertProductoDTO;
 import com.ejercicioSpring.model.ProductoModel;
 import com.ejercicioSpring.repository.CategoriaRepository;
 import com.ejercicioSpring.repository.ColorRepository;
-import com.ejercicioSpring.repository.ProductoCategoriaRepository;
 import com.ejercicioSpring.repository.ProductoRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -18,7 +15,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,22 +59,7 @@ public class ProductoServiceImp  implements ProductoService{
         return insertProductoDTO;
     }
 
-    private List<ProductoCategoriaExtends> CheckAndGetProductoCategorias(int[] ListaidCategorias, Producto producto) throws Exception {
-        List<CategoriaExtends> listaCategoria = new ArrayList<>();
-        for (int categoriaCodigo:ListaidCategorias ) {
-            Optional<CategoriaExtends> categoria = categoriaRepository.findById(categoriaCodigo);
-            if(!categoria.isPresent()) throw new Exception("No se encontro la categoria");
-            listaCategoria.add(categoria.get());
 
-        }
-        List<ProductoCategoriaExtends> listaProductoCategoria = new ArrayList<>();
-        for (CategoriaExtends categoria : listaCategoria) {
-            listaProductoCategoria.add(
-                    new ProductoCategoriaExtends(
-                            new ProductoCategoriaId(producto.getCodigo(),categoria.getCodigo())));
-        }
-        return listaProductoCategoria;
-    }
 
     @Override
     public void deleteProducto(int codigo) {

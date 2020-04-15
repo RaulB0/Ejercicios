@@ -2,15 +2,16 @@ package com.ejercicioSpring.service;
 
 import com.ejercicioSpring.model.CategoriaModel;
 import com.ejercicioSpring.model.InsertProductoDTO;
+import com.ejercicioSpring.model.MensajeDTO;
 import com.ejercicioSpring.model.ProductoModel;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface CategoriaService {
-
-    public CategoriaModel getCategoria(int codigo);
-    public List<CategoriaModel> getAllCategorias();
-    public CategoriaModel insertCategoria(CategoriaModel categoriaModel) throws Exception;
-    public void deleteCategoria(int codigo);
-    public CategoriaModel updateCategoria(CategoriaModel categoria) throws Exception;
+    public ResponseEntity<CategoriaModel> getCategoria(int codigo);
+    public ResponseEntity<List<CategoriaModel>> getAllCategorias();
+    public ResponseEntity<CategoriaModel> insertCategoria(CategoriaModel categoriaModel);
+    public ResponseEntity<MensajeDTO> deleteCategoria(int codigo);
+    public ResponseEntity<CategoriaModel> updateCategoria(CategoriaModel categoria);
 }
