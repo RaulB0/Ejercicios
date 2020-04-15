@@ -39,9 +39,6 @@ public class ProductoServiceImp  implements ProductoService{
     @Qualifier("ColorRepository")
     ColorRepository colorRepository;
 
-    @Autowired
-    @Qualifier("ProductoCategoriaRepository")
-    ProductoCategoriaRepository productoCategoriaRepository;
 
 
 
@@ -62,12 +59,6 @@ public class ProductoServiceImp  implements ProductoService{
 
         productoRepository.save(producto);
 
-        if(insertProductoDTO.getListaCategorias() != null){
-            List<ProductoCategoriaExtends> listaProductoCategoria = CheckAndGetProductoCategorias(insertProductoDTO.getListaCategorias(), producto);
-
-            productoCategoriaRepository.saveAll(listaProductoCategoria);
-
-        }
 
         return insertProductoDTO;
     }
@@ -124,14 +115,7 @@ public class ProductoServiceImp  implements ProductoService{
 
             productoRepository.save(producto);
 
-            if(productoDTO.getListaCategorias() != null){
-                List<ProductoCategoriaExtends> listaProductoCategoria = CheckAndGetProductoCategorias(productoDTO.getListaCategorias(), producto);
 
-                productoCategoriaRepository.saveAll(listaProductoCategoria);
-
-            }else{
-                productoCategoriaRepository.deleteAll(producto.getListaCategorias());
-            }
 
             return productoDTO;
         }catch(Exception e){

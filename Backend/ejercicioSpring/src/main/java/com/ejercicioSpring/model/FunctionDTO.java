@@ -1,13 +1,13 @@
 package com.ejercicioSpring.model;
 
-public class functionDTO {
+public class FunctionDTO {
 
     private int cantidad;
 
-    public functionDTO() {
+    public FunctionDTO() {
     }
 
-    public functionDTO(int cantidad) {
+    public FunctionDTO(int cantidad) {
         this.cantidad = cantidad;
     }
 

@@ -14,13 +14,12 @@ public class ProductoModel  implements Serializable {
     private ColorModel color;
     private String fecha_creacion;
 
-    @JsonBackReference
-    private List<ProductoCategoriaModel> listaCategorias;
+    private List<CategoriaModel> listaCategorias;
 
     public ProductoModel() {
     }
 
-    public ProductoModel(int codigo, String nombre, ColorModel color, String fecha_creacion, List<ProductoCategoriaModel> listaCategorias) {
+    public ProductoModel(int codigo, String nombre, ColorModel color, String fecha_creacion, List<CategoriaModel> listaCategorias) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.color = color;
@@ -60,11 +59,11 @@ public class ProductoModel  implements Serializable {
         this.fecha_creacion = fecha_creacion;
     }
 
-    public List<ProductoCategoriaModel> getListaCategorias() {
+    public List<CategoriaModel> getListaCategorias() {
         return listaCategorias;
     }
 
-    public void setListaCategorias(List<ProductoCategoriaModel> listaCategorias) {
+    public void setListaCategorias(List<CategoriaModel> listaCategorias) {
         this.listaCategorias = listaCategorias;
     }
 

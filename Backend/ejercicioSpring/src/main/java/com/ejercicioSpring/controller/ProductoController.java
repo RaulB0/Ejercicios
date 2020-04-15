@@ -55,8 +55,6 @@ public class ProductoController {
     public ResponseEntity<String> deleteProducto(@RequestParam(name="codigo") int codigo){
         ProductoModel producto = productoService.getProducto(codigo);
 
-
-        System.out.println("----------------------------------------------");
         if(producto == null){
             return new ResponseEntity<String>("", HttpStatus.NOT_FOUND);
         }else{

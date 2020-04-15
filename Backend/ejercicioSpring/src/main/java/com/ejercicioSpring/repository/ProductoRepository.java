@@ -24,21 +24,14 @@ public interface ProductoRepository extends JpaRepository<ProductoExtends,Intege
     @Query(value="" +
             "SELECT u " +
             "FROM ProductoExtends u JOIN u.listaCategorias d " +
-            "WHERE d.categoria.codigo = :categoria")
+            "WHERE d.codigo = :categoria")
     List<ProductoExtends> getProductosByCategory(@Param("categoria") int categoria);
 
-    @Procedure(name = "INSERTAR_PRODUCTO")
-    String INSERTAR_PRODUCTO(
-            @Param("PARAMCODIGO")int PARAMCODIGO,
-            @Param("PARAMNOMBRE")String PARAMNOMBRE,
-            @Param("PARAMCOLOR")int PARAMCOLOR,
-            @Param("FECHA_CREACION") Date FECHA_CREACION);
 
-    @Procedure(name = "BORRAR_PRODUCTO")
-    String BORRAR_PRODUCTO(@Param("PARAMCODIGO") int PARAMCODIGO);
 
-    @Query(value="SELECT DISTINCT COUNT_PRODUCTO_CATEGORY(:categoria) FROM PRODUCTO", nativeQuery = true)
-    int functionProductosByCategory(@Param("categoria") String categoria);
+
+
+
 
 
 }

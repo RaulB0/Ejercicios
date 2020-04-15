@@ -1,5 +1,6 @@
 package com.ejercicioSpring.entity.entity_extends;
 
+import com.ejercicioSpring.entity.entities.Categoria;
 import com.ejercicioSpring.entity.entities.Color;
 import com.ejercicioSpring.entity.entities.Producto;
 import com.ejercicioSpring.entity.entities.ProductoCategoria;
@@ -10,35 +11,20 @@ import java.util.List;
 
 @Entity
 @Table(name="PRODUCTO")
-@NamedStoredProcedureQueries({
-        @NamedStoredProcedureQuery(
-                name = "BORRAR_PRODUCTO",
-                procedureName = "BORRAR_PRODUCTO",
-                parameters = {
-                        @StoredProcedureParameter(mode = ParameterMode.IN, name="PARAMCODIGO", type = Integer.class),
-                        @StoredProcedureParameter(mode = ParameterMode.OUT, name="MSGERROR", type = String.class)
-                }
-        ),
-        @NamedStoredProcedureQuery(
-                name = "INSERTAR_PRODUCTO",
-                procedureName = "INSERTAR_PRODUCTO",
-                parameters = {
-                        @StoredProcedureParameter(mode = ParameterMode.IN, name="PARAMCODIGO", type = Integer.class),
-                        @StoredProcedureParameter(mode = ParameterMode.IN, name="PARAMNOMBRE", type = String.class),
-                        @StoredProcedureParameter(mode = ParameterMode.IN, name="PARAMCOLOR", type = Integer.class),
-                        @StoredProcedureParameter(mode = ParameterMode.IN, name="FECHA_CREACION", type = Date.class),
-                        @StoredProcedureParameter(mode = ParameterMode.OUT, name="MSGERROR", type = String.class)
-                }
-        )
-})
 public class ProductoExtends extends Producto {
 
     @JoinColumn(name = "COLOR", referencedColumnName = "CODIGO")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private ColorExtends color;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "productoCategoriaId.codigoProducto")
-    private List<ProductoCategoriaExtends> listaCategorias;
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(
+            name = "PRODUCTO_CATEGORIA",
+            joinColumns = { @JoinColumn(name = "CODIGO_PRODUCTO") },
+            inverseJoinColumns = { @JoinColumn(name = "CODIGO_CATEGORIA") }
+
+    )
+    private List<CategoriaExtends> listaCategorias;
 
 
     public ProductoExtends() {
@@ -52,11 +38,11 @@ public class ProductoExtends extends Producto {
         this.color = color;
     }
 
-    public List<ProductoCategoriaExtends> getListaCategorias() {
+    public List<CategoriaExtends> getListaCategorias() {
         return listaCategorias;
     }
 
-    public void setListaCategorias(List<ProductoCategoriaExtends> listaCategorias) {
+    public void setListaCategorias(List<CategoriaExtends> listaCategorias) {
         this.listaCategorias = listaCategorias;
     }
 
