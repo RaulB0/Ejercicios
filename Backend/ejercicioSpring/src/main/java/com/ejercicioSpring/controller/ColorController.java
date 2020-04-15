@@ -23,7 +23,7 @@ public class ColorController {
     ColorService colorService;
 
 
-    @PostMapping("insertColor")
+    @PutMapping("insertColor")
     public ResponseEntity<InsertColorDTO> insertColor(@RequestBody InsertColorDTO color)  {
         return colorService.insertColor(color);
     }
@@ -39,13 +39,13 @@ public class ColorController {
     }
 
 
-    @GetMapping("/deleteColor")
+    @DeleteMapping("/deleteColor")
     public ResponseEntity<MensajeDTO> deleteColor(@RequestParam(name="codigo") int codigo){
         return colorService.deleteColor(codigo);
     }
 
 
-    @PostMapping("updateColor")
+    @PutMapping("updateColor")
     public ResponseEntity<InsertColorDTO> updateColor(@RequestBody InsertColorDTO colorDTO){
         return  colorService.updateColor(colorDTO);
     }

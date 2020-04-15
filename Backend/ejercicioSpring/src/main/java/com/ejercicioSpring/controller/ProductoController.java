@@ -22,7 +22,7 @@ public class ProductoController {
     ProductoService productoService;
 
 
-    @PostMapping("insertProducto")
+    @PutMapping("insertProducto")
     public ResponseEntity<InsertProductoDTO> insertProducto(@RequestBody InsertProductoDTO insertProductoDTO)  {
         return productoService.insertProducto(insertProductoDTO);
     }
@@ -39,13 +39,13 @@ public class ProductoController {
     }
 
 
-    @GetMapping("/deleteProducto")
+    @DeleteMapping("/deleteProducto")
     public ResponseEntity<MensajeDTO> deleteProducto(@RequestParam(name="codigo") int codigo){
         return productoService.deleteProducto(codigo);
     }
 
 
-    @PostMapping("updateProducto")
+    @PutMapping("updateProducto")
     public ResponseEntity<InsertProductoDTO> updateProducto(@RequestBody InsertProductoDTO insertProductoDTO){
         return productoService.updateProducto(insertProductoDTO);
     }

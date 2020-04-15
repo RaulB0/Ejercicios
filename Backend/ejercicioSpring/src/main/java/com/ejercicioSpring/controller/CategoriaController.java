@@ -20,7 +20,7 @@ public class CategoriaController {
     CategoriaService categoriaService;
 
 
-    @PostMapping("insertCategoria")
+    @PutMapping("insertCategoria")
     public ResponseEntity<CategoriaModel> insertCategoria(@RequestBody CategoriaModel categoriaModel)  {
         return categoriaService.insertCategoria(categoriaModel);
     }
@@ -38,13 +38,13 @@ public class CategoriaController {
     }
 
 
-    @GetMapping("/deleteCategoria")
+    @DeleteMapping("/deleteCategoria")
     public ResponseEntity<MensajeDTO> deleteCategoria(@RequestParam(name="codigo") int codigo){
         return categoriaService.deleteCategoria(codigo);
     }
 
 
-    @PostMapping("updateCategoria")
+    @PutMapping("updateCategoria")
     public ResponseEntity<CategoriaModel> updateCategoria(@RequestBody CategoriaModel categoriaModel){
         return categoriaService.updateCategoria(categoriaModel);
     }
